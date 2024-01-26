@@ -16,7 +16,7 @@ jobs:
     - name: Get latest release info
       id: get_release
       run: |
-        latest_release_tag=$(curl -sSL https://api.github.com/repos/TheAcharya/Airlift/releases/latest | jq -r '.tag_name')
+        latest_release_tag=$(curl -sSL https://api.github.com/repos/TheAcharya/Airlift/releases/latest | jq -r '.tag_name | ltrimstr("v")')
         latest_release_url=$(curl -sSL https://api.github.com/repos/TheAcharya/Airlift/releases/latest | jq -r '.assets[] | select(.name | endswith(".pkg")) | .browser_download_url')
 
         echo "Latest release tag: $latest_release_tag"
@@ -33,6 +33,7 @@ jobs:
 
         echo "Updating formula file with version $tag and sha256 $sha256"
         sed -i.bak -E "s/version \"[^\"]+\"/version \"$tag\"/" Casks/airlift.rb
+        sed -i.bak -E "s/airlift_version = \"[^\"]+\"/airlift_version = \"$tag\"/" Casks/airlift.rb
         sed -i.bak -E "s/sha256 :[^\n]+/sha256 :$sha256/" Casks/airlift.rb
 
       # Commit changes
