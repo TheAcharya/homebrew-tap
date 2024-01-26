@@ -2,13 +2,13 @@ cask "markersextractor" do
     version "0.3.3"
     sha256 :no_check
       
-    markers-extractor-cli_version = "0.3.3"
-    url "https://github.com/TheAcharya/MarkersExtractor/releases/download/#{amarkers-extractor-cli_version}/markers-extractor-cli-#{markers-extractor-cli_version}.pkg"
+    markers_cli_ver = "0.3.3"
+    url "https://github.com/TheAcharya/MarkersExtractor/releases/download/#{markers_cli_ver}/markers-extractor-cli-#{markers_cli_ver}.pkg"
     name "MarkersExtractor"
     desc "Extract Markers from Final Cut Pro FCPXML"
     homepage "https://github.com/TheAcharya/MarkersExtractor"
   
-    pkg "markers-extractor-cli-#{markers-extractor-cli_version}.pkg"   
+    pkg "markers-extractor-cli-#{amarkers_cli_ver}.pkg"   
   
     uninstall pkgutil: "co.theacharya.MarkersExtractor"
   end
