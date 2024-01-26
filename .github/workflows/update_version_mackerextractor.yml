@@ -32,7 +32,7 @@ jobs:
 
         echo "Updating formula file with version $tag and sha256 $sha256"
         sed -i.bak -E "s/version \"[^\"]+\"/version \"$tag\"/" Casks/markersextractor.rb
-        sed -i.bak -E "s/airlift_version = \"[^\"]+\"/airlift_version = \"$tag\"/" Casks/markersextractor.rb
+        sed -i.bak -E "s/markers_cli_ver = \"[^\"]+\"/markers_cli_ver = \"$tag\"/" Casks/markersextractor.rb
         sed -i.bak -E "s/sha256 \"[^\"]+\"/sha256 \"$sha256\"/" Casks/markersextractor.rb
 
       # Commit changes
