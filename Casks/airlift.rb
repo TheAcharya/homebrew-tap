@@ -10,6 +10,6 @@ cask "airlift" do
   
     pkg "Airlift_#{airlift_version}.pkg"   
   
-    uninstall pkgutil: "com.bps.airlift"
+    uninstall pkgutil: "com.bps.airlift.pkg"
   end
   
