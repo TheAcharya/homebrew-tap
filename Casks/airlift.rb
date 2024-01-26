@@ -4,8 +4,8 @@ cask "airlift" do
       
     airlift_version = "1.0.6"
     url "https://github.com/TheAcharya/Airlift/releases/download/v#{airlift_version}/Airlift_#{airlift_version}.pkg"
-    name "airlift"
-    desc "A command-line tool to upload csv/json to airtable"
+    name "Airlift"
+    desc "Upload & Merge Data with Attachments to Airtable"
     homepage "https://github.com/TheAcharya/Airlift"
   
     pkg "Airlift_#{airlift_version}.pkg"   
