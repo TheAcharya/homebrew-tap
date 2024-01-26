@@ -2,4 +2,4 @@
 
 # Homebrew Tap
 
-This repository contains the Homebrew formulas for the our Applications.
+This repository contains the homebrew formulas for our applications.
