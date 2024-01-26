@@ -2,7 +2,7 @@ name: Update Airlift Formula
 
 on:
   schedule:
-    - cron: '0 * * * *'  # Schedule to run every hour
+    - cron: '0 2 * * 6'  # Schedule to run every Saturday at 10 am SGT (2 am UTC)
   workflow_dispatch:
     
 jobs:
