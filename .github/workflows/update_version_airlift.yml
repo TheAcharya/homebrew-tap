@@ -42,6 +42,6 @@ jobs:
       run: |
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
-        git add Casks/airlift.rb
+        git add .
         git commit -m "Update Airlift formula to version ${{ env.VERSION }}"
         git push
