@@ -8,7 +8,7 @@ cask "markersextractor" do
     desc "Extract Markers from Final Cut Pro FCPXML"
     homepage "https://github.com/TheAcharya/MarkersExtractor"
   
-    pkg "markers-extractor-cli-#{amarkers_cli_ver}.pkg"   
+    pkg "markers-extractor-cli-#{markers_cli_ver}.pkg"   
   
     uninstall pkgutil: "co.theacharya.MarkersExtractor"
   end
