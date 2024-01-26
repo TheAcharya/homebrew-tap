@@ -1,0 +1,44 @@
+name: Update Airlift Formula
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Schedule to run every hour
+
+jobs:
+  update_formula:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Get latest release info
+      id: get_release
+      run: |
+        latest_release_tag=$(curl -sSL https://api.github.com/repos/TheAcharya/Airlift/releases/latest | jq -r '.tag_name')
+        latest_release_url=$(curl -sSL https://api.github.com/repos/TheAcharya/Airlift/releases/latest | jq -r '.assets[] | select(.name | endswith(".pkg")) | .browser_download_url')
+
+        echo "Latest release tag: $latest_release_tag"
+        echo "Latest release URL: $latest_release_url"
+
+        echo "::set-output name=tag::$latest_release_tag"
+        echo "::set-output name=url::$latest_release_url"
+
+    - name: Update formula file
+      run: |
+        tag=${{ steps.get_release.outputs.tag }}
+        url=${{ steps.get_release.outputs.url }}
+        sha256=$(curl -sSL $url | shasum -a 256 | awk '{print $1}')
+
+        echo "Updating formula file with version $tag and sha256 $sha256"
+        sed -i.bak -E "s/version \"[^\"]+\"/version \"$tag\"/" Casks/airlift.rb
+        sed -i.bak -E "s/sha256 :[^\n]+/sha256 :$sha256/" Casks/airlift.rb
+
+      # Commit changes
+    - name: Commit changes
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add Casks/airlift.rb
+        git commit -m "Update Airlift formula to version $tag"
+        git push
