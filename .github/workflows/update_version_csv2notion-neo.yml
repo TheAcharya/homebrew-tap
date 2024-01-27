@@ -1,4 +1,4 @@
-name: Update Neo Formula
+name: Update CSV2Notion Neo Formula
 
 on:
   workflow_dispatch:
