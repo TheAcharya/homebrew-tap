@@ -20,13 +20,11 @@ jobs:
         echo "Latest release tag: $latest_release_tag"
         echo "Latest release URL: $latest_release_url"
 
-        echo "::set-output name=tag::$latest_release_tag"
-        echo "::set-output name=url::$latest_release_url"
 
     - name: Update formula file
       run: |
-        tag=${{ steps.get_release.outputs.tag }}
-        url=${{ steps.get_release.outputs.url }}
+        tag=$(curl -sSL https://api.github.com/repos/TheAcharya/Airlift/releases/latest | jq -r '.tag_name | ltrimstr("v")')
+        url=$(curl -sSL https://api.github.com/repos/TheAcharya/Airlift/releases/latest | jq -r '.assets[] | select(.name | endswith(".pkg")) | .browser_download_url')
         sha256=$(curl -sSL $url | shasum -a 256 | awk '{print $1}')
 
         rm Casks/airlift.rb
@@ -48,6 +46,7 @@ jobs:
       # Commit changes
     - name: Commit changes
       run: |
+        tag=$(curl -sSL https://api.github.com/repos/TheAcharya/Airlift/releases/latest | jq -r '.tag_name | ltrimstr("v")')
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add .
