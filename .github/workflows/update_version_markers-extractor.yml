@@ -41,5 +41,5 @@ jobs:
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add .
-        git commit -m "Updated markersextractor formula to version ${{ env.VERSION }}"
+        git commit -m "Updated markers-extractor formula to version ${{ env.VERSION }}"
         git push
