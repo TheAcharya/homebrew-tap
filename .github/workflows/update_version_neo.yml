@@ -1,0 +1,45 @@
+name: Update Neo Formula
+
+on:
+  workflow_dispatch:
+    
+jobs:
+  update_formula:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Get latest release info
+      id: get_release
+      run: |
+        latest_release_tag=$(curl -sSL https://api.github.com/repos/TheAcharya/csv2notion-neo/releases/latest | jq -r '.tag_name | ltrimstr("v")')
+        latest_release_url=$(curl -sSL https://api.github.com/repos/TheAcharya/csv2notion-neo/releases/latest | jq -r '.assets[] | select(.name | endswith(".pkg")) | .browser_download_url')
+
+        echo "VERSION=$latest_release_tag" >> GITHUB_ENV
+        echo "Latest release tag: $latest_release_tag"
+        echo "Latest release URL: $latest_release_url"
+
+        echo "::set-output name=tag::$latest_release_tag"
+        echo "::set-output name=url::$latest_release_url"
+
+    - name: Update formula file
+      run: |
+        tag=${{ steps.get_release.outputs.tag }}
+        url=${{ steps.get_release.outputs.url }}
+        sha256=$(curl -sSL $url | shasum -a 256 | awk '{print $1}')
+
+        echo "Updating formula file with version $tag and sha256 $sha256"
+        sed -i.bak -E "s/version \"[^\"]+\"/version \"$tag\"/" Casks/csv2notion-neo.rb
+        sed -i.bak -E "s/neo_version = \"[^\"]+\"/neo_version = \"$tag\"/" Casks/csv2notion-neo.rb
+        sed -i.bak -E "s/sha256 \"[^\"]+\"/sha256 \"$sha256\"/" Casks/csv2notion-neo.rb
+
+      # Commit changes
+    - name: Commit changes
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add .
+        git commit -m "Update csv2notion-neo formula to version ${{ env.VERSION }}"
+        git push
