@@ -7,7 +7,7 @@ cask "csv2notion-neo" do
   desc "Upload & Merge Data with Attachments to Notion"
   homepage "https://github.com/TheAcharya/csv2notion-neo"
 
-  pkg "CSV2Notion-Neo_$tag.pkg"
+  pkg "CSV2Notion-Neo_1.2.2.pkg"
 
   uninstall pkgutil: "co.theacharya.Csv2notionNeo"
 end
