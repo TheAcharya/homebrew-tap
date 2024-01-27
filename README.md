@@ -19,3 +19,7 @@ $ brew uptap TheAcharya/homebrew-tap
 ```bash
 $ brew install --cask <formula>
 ```
+
+```bash
+$ brew uninstall --cask <formula>
+```
