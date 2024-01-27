@@ -8,5 +8,5 @@ cask "csv2notion-neo" do
 
   pkg "CSV2Notion-Neo_1.2.2.pkg"
 
-  uninstall pkgutil: "co.theacharya.Csv2notionNeo"
+  uninstall pkgutil: "co.theacharya.CSV2Notion-Neo"
 end
