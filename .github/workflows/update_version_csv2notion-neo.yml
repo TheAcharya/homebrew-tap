@@ -20,13 +20,13 @@ jobs:
         echo "Latest release tag: $latest_release_tag"
         echo "Latest release URL: $latest_release_url"
 
-        echo "::set-output name=tag::$latest_release_tag"
-        echo "::set-output name=url::$latest_release_url"
+        echo "TAG=$latest_release_tag" >> GITHUB_ENV
+        echo "URL=$latest_release_url" >> GITHUB_ENV
 
     - name: Update formula file
       run: |
-        tag=${{ steps.get_release.outputs.tag }}
-        url=${{ steps.get_release.outputs.url }}
+        tag=${{ env.TAG }}
+        url=${{ env.URL }}
         sha256=$(curl -sSL $url | shasum -a 256 | awk '{print $1}')
 
         echo "Updating formula file with version $tag and sha256 $sha256"
@@ -52,5 +52,5 @@ jobs:
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add .
-        git commit -m "Update csv2notion-neo formula to version ${{ steps.get_release.outputs.tag }}"
+        git commit -m "Update csv2notion-neo formula to version ${{ env.TAG }}"
         git push
