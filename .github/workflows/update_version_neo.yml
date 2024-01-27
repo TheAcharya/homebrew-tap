@@ -31,9 +31,22 @@ jobs:
         sha256=$(curl -sSL $url | shasum -a 256 | awk '{print $1}')
 
         echo "Updating formula file with version $tag and sha256 $sha256"
-        sed -i -E "s/^version\s+\"[^\"]+\"$/version \"$tag\"/" Casks/csv2notion-neo.rb
-        sed -i -E "s/^neo_version\s+=\s+\"[^\"]+\"$/neo_version = \"$tag\"/" Casks/csv2notion-neo.rb
-        sed -i -E "s/^sha256\s+\"[^\"]+\"$/sha256 \"$sha256\"/" Casks/csv2notion-neo.rb
+        rm Casks/csv2notion-neo.rb
+        
+        echo 'cask "csv2notion-neo" do' > Casks/csv2notion-neo.rb
+        echo "  version \"$tag\"" >> Casks/csv2notion-neo.rb
+        echo '  sha256 ""' >> Casks/csv2notion-neo.rb
+        echo "  neo_version = \"$tag\"" >> Casks/csv2notion-neo.rb
+        echo "  url \"https://github.com/TheAcharya/csv2notion-neo/releases/download/v$tag/CSV2Notion-Neo_$tag.pkg\"" >> Casks/csv2notion-neo.rb
+        echo '  name "Csv2notionNeo"' >> Casks/csv2notion-neo.rb
+        echo '  desc "Upload & Merge Data with Attachments to Notion"' >> Casks/csv2notion-neo.rb
+        echo '  homepage "https://github.com/TheAcharya/csv2notion-neo"' >> Casks/csv2notion-neo.rb
+        echo '' >> Casks/csv2notion-neo.rb
+        echo '  pkg "CSV2Notion-Neo_$tag.pkg"' >> Casks/csv2notion-neo.rb
+        echo '' >> Casks/csv2notion-neo.rb
+        echo '  uninstall pkgutil: "co.theacharya.Csv2notionNeo"' >> Casks/csv2notion-neo.rb
+        echo 'end' >> Casks/csv2notion-neo.rb
+
 
     # Commit changes
     - name: Commit changes
