@@ -29,12 +29,12 @@ jobs:
         tag=${{ steps.get_release.outputs.tag }}
         url=${{ steps.get_release.outputs.url }}
         sha256=$(curl -sSL $url | shasum -a 256 | awk '{print $1}')
-    
+
         echo "Updating formula file with version $tag and sha256 $sha256"
         sed -i -E "s/^version\s+\"[^\"]+\"$/version \"$tag\"/" Casks/csv2notion-neo.rb
         sed -i -E "s/^neo_version\s+=\s+\"[^\"]+\"$/neo_version = \"$tag\"/" Casks/csv2notion-neo.rb
         sed -i -E "s/^sha256\s+\"[^\"]+\"$/sha256 \"$sha256\"/" Casks/csv2notion-neo.rb
-    
+
     # Commit changes
     - name: Commit changes
       run: |
@@ -42,5 +42,4 @@ jobs:
         git config user.email "actions@github.com"
         git add .
         git commit -m "Update csv2notion-neo formula to version ${{ env.VERSION }}"
-          git push
-      
+        git push
