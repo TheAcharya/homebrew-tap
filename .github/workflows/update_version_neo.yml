@@ -35,7 +35,7 @@ jobs:
 
         echo 'cask "csv2notion-neo" do' > Casks/csv2notion-neo.rb
         echo "  version \"$tag\"" >> Casks/csv2notion-neo.rb
-        echo '  sha256 "$sha256"' >> Casks/csv2notion-neo.rb
+        echo '  sha256 \"$sha256\"' >> Casks/csv2notion-neo.rb
         echo "  neo_version = \"$tag\"" >> Casks/csv2notion-neo.rb
         echo "  url \"https://github.com/TheAcharya/csv2notion-neo/releases/download/v$tag/CSV2Notion-Neo_$tag.pkg\"" >> Casks/csv2notion-neo.rb
         echo '  name "Csv2notionNeo"' >> Casks/csv2notion-neo.rb
