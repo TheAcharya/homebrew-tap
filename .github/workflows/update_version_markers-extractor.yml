@@ -34,7 +34,7 @@ jobs:
         echo 'cask "markers-extractor" do' > Casks/markers-extractor.rb
         echo "  version \"$tag\"" >> Casks/markers-extractor.rb
         echo "  sha256 \"$sha256\"" >> Casks/markers-extractor.rb
-        echo "  url \"https://github.com/TheAcharya/MarkersExtractor/releases/download/v$tag/markers-extractor-cli-$tag.pkg\"" >> Casks/markers-extractor.rb
+        echo "  url \"https://github.com/TheAcharya/MarkersExtractor/releases/download/$tag/markers-extractor-cli-$tag.pkg\"" >> Casks/markers-extractor.rb
         echo '  name "MarkersExtractor"' >> Casks/markers-extractor.rb
         echo '  desc "Extract Markers from Final Cut Pro FCPXML"' >> Casks/markers-extractor.rb
         echo '  homepage "https://github.com/TheAcharya/MarkersExtractor"' >> Casks/markers-extractor.rb
