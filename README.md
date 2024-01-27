@@ -13,7 +13,7 @@ $ brew tap TheAcharya/homebrew-tap
 ```
 
 ```bash
-$ brew uptap TheAcharya/homebrew-tap
+$ brew untap TheAcharya/homebrew-tap
 ```
 
 ```bash
