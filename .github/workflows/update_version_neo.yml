@@ -31,9 +31,9 @@ jobs:
         sha256=$(curl -sSL $url | shasum -a 256 | awk '{print $1}')
 
         echo "Updating formula file with version $tag and sha256 $sha256"
-        awk -v tag="$tag" '/^version/ {gsub(/"[^"]+"/, "\"" tag "\"")} {print}' Casks/csv2notion-neo.rb > temp.rb && mv temp.rb Casks/csv2notion-neo.rb
-        awk -v tag="$tag" '/^neo_version/ {gsub(/"[^"]+"/, "\"" tag "\"")} {print}' Casks/csv2notion-neo.rb > temp.rb && mv temp.rb Casks/csv2notion-neo.rb
-        awk -v sha256="$sha256" '/^sha256/ {gsub(/"[^"]+"/, "\"" sha256 "\"")} {print}' Casks/csv2notion-neo.rb > temp.rb && mv temp.rb Casks/csv2notion-neo.rb
+        sed -i -E "s/^version\s+\"[^\"]+\"$/version \"$tag\"/" Casks/csv2notion-neo.rb
+        sed -i -E "s/^neo_version\s+=\s+\"[^\"]+\"$/neo_version = \"$tag\"/" Casks/csv2notion-neo.rb
+        sed -i -E "s/^sha256\s+\"[^\"]+\"$/sha256 \"$sha256\"/" Casks/csv2notion-neo.rb
 
     # Commit changes
     - name: Commit changes
