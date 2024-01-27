@@ -1,6 +1,6 @@
 cask "markersextractor" do
     version "0.3.3"
-    sha256 :no_check
+    sha256 ""
       
     markers_cli_ver = "0.3.3"
     url "https://github.com/TheAcharya/MarkersExtractor/releases/download/#{markers_cli_ver}/markers-extractor-cli-#{markers_cli_ver}.pkg"
