@@ -36,13 +36,13 @@ jobs:
         echo "  version \"$tag\"" >> Casks/csv2notion-neo.rb
         echo "  sha256 \"$sha256\"" >> Casks/csv2notion-neo.rb
         echo "  url \"https://github.com/TheAcharya/csv2notion-neo/releases/download/v$tag/CSV2Notion-Neo_$tag.pkg\"" >> Casks/csv2notion-neo.rb
-        echo '  name "Csv2notionNeo"' >> Casks/csv2notion-neo.rb
-        echo '  desc "Upload & Merge Data with Attachments to Notion"' >> Casks/csv2notion-neo.rb
+        echo '  name "CSV2Notion Neo"' >> Casks/csv2notion-neo.rb
+        echo '  desc "Upload & Merge CSV or JSON Data with Images to Notion Database"' >> Casks/csv2notion-neo.rb
         echo '  homepage "https://github.com/TheAcharya/csv2notion-neo"' >> Casks/csv2notion-neo.rb
         echo '' >> Casks/csv2notion-neo.rb
         echo "  pkg \"CSV2Notion-Neo_$tag.pkg\"" >> Casks/csv2notion-neo.rb
         echo '' >> Casks/csv2notion-neo.rb
-        echo '  uninstall pkgutil: "co.theacharya.Csv2notionNeo"' >> Casks/csv2notion-neo.rb
+        echo '  uninstall pkgutil: "co.theacharya.CSV2Notion-Neo"' >> Casks/csv2notion-neo.rb
         echo 'end' >> Casks/csv2notion-neo.rb
 
 
