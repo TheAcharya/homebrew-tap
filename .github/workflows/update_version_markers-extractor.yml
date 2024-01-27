@@ -17,7 +17,6 @@ jobs:
         latest_release_tag=$(curl -sSL https://api.github.com/repos/TheAcharya/MarkersExtractor/releases/latest | jq -r '.tag_name | ltrimstr("v")')
         latest_release_url=$(curl -sSL https://api.github.com/repos/TheAcharya/MarkersExtractor/releases/latest | jq -r '.assets[] | select(.name | endswith(".pkg")) | .browser_download_url')
 
-        echo "VERSION=$latest_release_tag" >> GITHUB_ENV
         echo "Latest release tag: $latest_release_tag"
         echo "Latest release URL: $latest_release_url"
 
@@ -35,13 +34,12 @@ jobs:
         echo 'cask "markers-extractor" do' > Casks/markers-extractor.rb
         echo "  version \"$tag\"" >> Casks/markers-extractor.rb
         echo "  sha256 \"$sha256\"" >> Casks/markers-extractor.rb
-        echo "  markers_cli_ver = \"$tag\"" >> Casks/markers-extractor.rb
-        echo "  url \"https://github.com/TheAcharya/MarkersExtractor/releases/download/#{tag}/markers-extractor-cli-#{tag}.pkg\"" >> Casks/markers-extractor.rb
+        echo "  url \"https://github.com/TheAcharya/MarkersExtractor/releases/download/v$tag/markers-extractor-cli-$tag.pkg\"" >> Casks/markers-extractor.rb
         echo '  name "MarkersExtractor"' >> Casks/markers-extractor.rb
         echo '  desc "Extract Markers from Final Cut Pro FCPXML"' >> Casks/markers-extractor.rb
         echo '  homepage "https://github.com/TheAcharya/MarkersExtractor"' >> Casks/markers-extractor.rb
         echo '' >> Casks/markers-extractor.rb
-        echo "  pkg \"markers-extractor-cli-#{tag}.pkg\"" >> Casks/markers-extractor.rb
+        echo "  pkg \"markers-extractor-cli-$tag.pkg\"" >> Casks/markers-extractor.rb
         echo '' >> Casks/markers-extractor.rb
         echo '  uninstall pkgutil: "co.theacharya.MarkersExtractor"' >> Casks/markers-extractor.rb
         echo 'end' >> Casks/markers-extractor.rb
@@ -52,5 +50,5 @@ jobs:
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add .
-        git commit -m "Updated markers-extractor formula to version ${{ env.VERSION }}"
+        git commit -m "Updated markers-extractor formula to version ${{ steps.get_release.outputs.tag }}"
         git push

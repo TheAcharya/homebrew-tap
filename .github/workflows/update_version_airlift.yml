@@ -17,7 +17,6 @@ jobs:
         latest_release_tag=$(curl -sSL https://api.github.com/repos/TheAcharya/Airlift/releases/latest | jq -r '.tag_name | ltrimstr("v")')
         latest_release_url=$(curl -sSL https://api.github.com/repos/TheAcharya/Airlift/releases/latest | jq -r '.assets[] | select(.name | endswith(".pkg")) | .browser_download_url')
 
-        echo "VERSION=$latest_release_tag" >> GITHUB_ENV
         echo "Latest release tag: $latest_release_tag"
         echo "Latest release URL: $latest_release_url"
 
@@ -36,7 +35,6 @@ jobs:
         echo 'cask "airlift" do' > Casks/airlift.rb
         echo "  version \"$tag\"" >> Casks/airlift.rb
         echo "  sha256 \"$sha256\"" >> Casks/airlift.rb
-        echo "  airlift_version = \"$tag\"" >> Casks/airlift.rb
         echo "  url \"https://github.com/TheAcharya/Airlift/releases/download/v$tag/Airlift_$tag.pkg\"" >> Casks/airlift.rb
         echo '  name "Airlift"' >> Casks/airlift.rb
         echo '  desc "Upload & Merge Data with Attachments to Airtable"' >> Casks/airlift.rb
@@ -53,5 +51,5 @@ jobs:
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add .
-        git commit -m "Update Airlift formula to version ${{ env.VERSION }}"
+        git commit -m "Update Airlift formula to version ${{ steps.get_release.outputs.tag }}"
         git push

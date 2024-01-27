@@ -17,7 +17,6 @@ jobs:
         latest_release_tag=$(curl -sSL https://api.github.com/repos/TheAcharya/csv2notion-neo/releases/latest | jq -r '.tag_name | ltrimstr("v")')
         latest_release_url=$(curl -sSL https://api.github.com/repos/TheAcharya/csv2notion-neo/releases/latest | jq -r '.assets[] | select(.name | endswith(".pkg")) | .browser_download_url')
 
-        echo "VERSION=$latest_release_tag" >> GITHUB_ENV
         echo "Latest release tag: $latest_release_tag"
         echo "Latest release URL: $latest_release_url"
 
@@ -36,7 +35,6 @@ jobs:
         echo 'cask "csv2notion-neo" do' > Casks/csv2notion-neo.rb
         echo "  version \"$tag\"" >> Casks/csv2notion-neo.rb
         echo "  sha256 \"$sha256\"" >> Casks/csv2notion-neo.rb
-        echo "  neo_version = \"$tag\"" >> Casks/csv2notion-neo.rb
         echo "  url \"https://github.com/TheAcharya/csv2notion-neo/releases/download/v$tag/CSV2Notion-Neo_$tag.pkg\"" >> Casks/csv2notion-neo.rb
         echo '  name "Csv2notionNeo"' >> Casks/csv2notion-neo.rb
         echo '  desc "Upload & Merge Data with Attachments to Notion"' >> Casks/csv2notion-neo.rb
@@ -54,5 +52,5 @@ jobs:
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add .
-        git commit -m "Update csv2notion-neo formula to version ${{ env.VERSION }}"
+        git commit -m "Update csv2notion-neo formula to version ${{ steps.get_release.outputs.tag }}"
         git push
