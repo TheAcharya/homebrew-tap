@@ -7,7 +7,7 @@ cask "airlift" do
   desc "Upload & Merge Data with Attachments to Airtable"
   homepage "https://github.com/TheAcharya/Airlift"
 
-  pkg "airlift_$tag.pkg"
+  pkg "Airlift_1.0.6.pkg"
 
   uninstall pkgutil: "co.theacharya.Airlift"
 end
