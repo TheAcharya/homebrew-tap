@@ -30,10 +30,22 @@ jobs:
         url=${{ steps.get_release.outputs.url }}
         sha256=$(curl -sSL $url | shasum -a 256 | awk '{print $1}')
 
+        rm Casks/airlift.rb
+
         echo "Updating formula file with version $tag and sha256 $sha256"
-        sed -i -E "s/version \"[^\"]+\"/version \"$tag\"/" Casks/airlift.rb
-        sed -i -E "s/airlift_version = \"[^\"]+\"/airlift_version = \"$tag\"/" Casks/airlift.rb
-        sed -i -E "s/sha256 \"[^\"]+\"/sha256 \"$sha256\"/" Casks/airlift.rb
+        echo 'cask "airlift" do' > Casks/airlift.rb
+        echo "  version \"$tag\"" >> Casks/airlift.rb
+        echo "  sha256 \"$sha256\"" >> Casks/airlift.rb
+        echo "  airlift_version = \"$tag\"" >> Casks/airlift.rb
+        echo "  url \"https://github.com/TheAcharya/Airlift/releases/download/v$tag/Airlift_$tag.pkg\"" >> Casks/airlift.rb
+        echo '  name "Airlift"' >> Casks/airlift.rb
+        echo '  desc "Upload & Merge Data with Attachments to Airtable"' >> Casks/airlift.rb
+        echo '  homepage "https://github.com/TheAcharya/Airlift"' >> Casks/airlift.rb
+        echo '' >> Casks/airlift.rb
+        echo '  pkg "Airlift_$tag.pkg"' >> Casks/airlift.rb
+        echo '' >> Casks/airlift.rb
+        echo '  uninstall pkgutil: "co.theacharya.Airlift"' >> Casks/airlift.rb
+        echo 'end' >> Casks/airlift.rb
 
       # Commit changes
     - name: Commit changes
