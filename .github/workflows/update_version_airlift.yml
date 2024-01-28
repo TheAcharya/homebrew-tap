@@ -26,29 +26,33 @@ jobs:
         tag=$(curl -sSL https://api.github.com/repos/TheAcharya/Airlift/releases/latest | jq -r '.tag_name | ltrimstr("v")')
         url=$(curl -sSL https://api.github.com/repos/TheAcharya/Airlift/releases/latest | jq -r '.assets[] | select(.name | endswith(".pkg")) | .browser_download_url')
         sha256=$(curl -sSL $url | shasum -a 256 | awk '{print $1}')
+        curr_tag=$(grep -oP '(?<=version ")[^"]*' Casks/airlift.rb)
 
-        rm Casks/airlift.rb
+        if ["$tag" != "$curr_tag"]; then
+          rm Casks/airlift.rb
+          echo "Updating formula file with version $tag and sha256 $sha256"
+          echo 'cask "airlift" do' > Casks/airlift.rb
+          echo "  version \"$tag\"" >> Casks/airlift.rb
+          echo "  sha256 \"$sha256\"" >> Casks/airlift.rb
+          echo "  url \"https://github.com/TheAcharya/Airlift/releases/download/v$tag/Airlift_$tag.pkg\"" >> Casks/airlift.rb
+          echo '  name "Airlift"' >> Casks/airlift.rb
+          echo '  desc "Upload & Merge Data with Attachments to Airtable"' >> Casks/airlift.rb
+          echo '  homepage "https://github.com/TheAcharya/Airlift"' >> Casks/airlift.rb
+          echo '' >> Casks/airlift.rb
+          echo "  pkg \"Airlift_$tag.pkg\"" >> Casks/airlift.rb
+          echo '' >> Casks/airlift.rb
+          echo '  uninstall pkgutil: "co.theacharya.Airlift"' >> Casks/airlift.rb
+          echo 'end' >> Casks/airlift.rb
 
-        echo "Updating formula file with version $tag and sha256 $sha256"
-        echo 'cask "airlift" do' > Casks/airlift.rb
-        echo "  version \"$tag\"" >> Casks/airlift.rb
-        echo "  sha256 \"$sha256\"" >> Casks/airlift.rb
-        echo "  url \"https://github.com/TheAcharya/Airlift/releases/download/v$tag/Airlift_$tag.pkg\"" >> Casks/airlift.rb
-        echo '  name "Airlift"' >> Casks/airlift.rb
-        echo '  desc "Upload & Merge Data with Attachments to Airtable"' >> Casks/airlift.rb
-        echo '  homepage "https://github.com/TheAcharya/Airlift"' >> Casks/airlift.rb
-        echo '' >> Casks/airlift.rb
-        echo "  pkg \"Airlift_$tag.pkg\"" >> Casks/airlift.rb
-        echo '' >> Casks/airlift.rb
-        echo '  uninstall pkgutil: "co.theacharya.Airlift"' >> Casks/airlift.rb
-        echo 'end' >> Casks/airlift.rb
+          echo "commiting changes"
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "Update Airlift formula to version ${{ steps.get_release.outputs.tag }}"
+          git push
+        else
+          echo "nothing to change"
+        fi 
 
-      # Commit changes
-    - name: Commit changes
-      run: |
-        tag=$(curl -sSL https://api.github.com/repos/TheAcharya/Airlift/releases/latest | jq -r '.tag_name | ltrimstr("v")')
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
-        git add .
-        git commit -m "Update Airlift formula to version ${{ steps.get_release.outputs.tag }}"
-        git push
+    
+        
