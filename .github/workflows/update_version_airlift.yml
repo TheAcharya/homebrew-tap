@@ -29,7 +29,7 @@ jobs:
         curr_tag=$(grep -oP '(?<=version ")[^"]*' Casks/airlift.rb)
         echo "$curr_tag"
 
-        if ["$tag" != "$curr_tag"]; then
+        if [ "$tag" != "$curr_tag" ]; then
           rm Casks/airlift.rb
           echo "Updating formula file with version $tag and sha256 $sha256"
           echo 'cask "airlift" do' > Casks/airlift.rb
