@@ -52,7 +52,7 @@ jobs:
           git commit -m "Update Airlift formula to version ${{ steps.get_release.outputs.tag }}"
           git push
         else
-          echo "nothing to change"
+          echo "The file airlift.rb is in the version $tag, which is the latest version"
         fi 
 
     

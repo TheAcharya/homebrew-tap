@@ -25,30 +25,33 @@ jobs:
         tag=$(curl -sSL https://api.github.com/repos/TheAcharya/csv2notion-neo/releases/latest | jq -r '.tag_name | ltrimstr("v")')
         url=$(curl -sSL https://api.github.com/repos/TheAcharya/csv2notion-neo/releases/latest | jq -r '.assets[] | select(.name | endswith(".pkg")) | .browser_download_url')
         sha256=$(curl -sSL $url | shasum -a 256 | awk '{print $1}')
+        curr_tag=$(grep -oP '(?<=version ")[^"]*' Casks/csv2notion-neo.rb)
 
-        echo "Updating formula file with version $tag and sha256 $sha256"
-        rm Casks/csv2notion-neo.rb
+        if [ "$curr_tag" == "$tag" ]; then
+          echo "Updating formula file with version $tag and sha256 $sha256"
+          rm Casks/csv2notion-neo.rb
 
-        echo 'cask "csv2notion-neo" do' > Casks/csv2notion-neo.rb
-        echo "  version \"$tag\"" >> Casks/csv2notion-neo.rb
-        echo "  sha256 \"$sha256\"" >> Casks/csv2notion-neo.rb
-        echo "  url \"https://github.com/TheAcharya/csv2notion-neo/releases/download/v$tag/CSV2Notion-Neo_$tag.pkg\"" >> Casks/csv2notion-neo.rb
-        echo '  name "CSV2Notion Neo"' >> Casks/csv2notion-neo.rb
-        echo '  desc "Upload & Merge CSV or JSON Data with Images to Notion Database"' >> Casks/csv2notion-neo.rb
-        echo '  homepage "https://github.com/TheAcharya/csv2notion-neo"' >> Casks/csv2notion-neo.rb
-        echo '' >> Casks/csv2notion-neo.rb
-        echo "  pkg \"CSV2Notion-Neo_$tag.pkg\"" >> Casks/csv2notion-neo.rb
-        echo '' >> Casks/csv2notion-neo.rb
-        echo '  uninstall pkgutil: "co.theacharya.CSV2Notion-Neo"' >> Casks/csv2notion-neo.rb
-        echo 'end' >> Casks/csv2notion-neo.rb
+          echo 'cask "csv2notion-neo" do' > Casks/csv2notion-neo.rb
+          echo "  version \"$tag\"" >> Casks/csv2notion-neo.rb
+          echo "  sha256 \"$sha256\"" >> Casks/csv2notion-neo.rb
+          echo "  url \"https://github.com/TheAcharya/csv2notion-neo/releases/download/v$tag/CSV2Notion-Neo_$tag.pkg\"" >> Casks/csv2notion-neo.rb
+          echo '  name "CSV2Notion Neo"' >> Casks/csv2notion-neo.rb
+          echo '  desc "Upload & Merge CSV or JSON Data with Images to Notion Database"' >> Casks/csv2notion-neo.rb
+          echo '  homepage "https://github.com/TheAcharya/csv2notion-neo"' >> Casks/csv2notion-neo.rb
+          echo '' >> Casks/csv2notion-neo.rb
+          echo "  pkg \"CSV2Notion-Neo_$tag.pkg\"" >> Casks/csv2notion-neo.rb
+          echo '' >> Casks/csv2notion-neo.rb
+          echo '  uninstall pkgutil: "co.theacharya.CSV2Notion-Neo"' >> Casks/csv2notion-neo.rb
+          echo 'end' >> Casks/csv2notion-neo.rb
 
+          echo "commiting changes"
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "Update csv2notion-neo formula to version $tag"
+          git push
+        else
+          echo "The current file is in the tag $tag, skipping update."
+        fi
 
-    # Commit changes
-    - name: Commit changes
-      run: |
-        tag=$(curl -sSL https://api.github.com/repos/TheAcharya/csv2notion-neo/releases/latest | jq -r '.tag_name | ltrimstr("v")')
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
-        git add .
-        git commit -m "Update csv2notion-neo formula to version $tag"
-        git push
+        
