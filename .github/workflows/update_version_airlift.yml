@@ -27,6 +27,7 @@ jobs:
         url=$(curl -sSL https://api.github.com/repos/TheAcharya/Airlift/releases/latest | jq -r '.assets[] | select(.name | endswith(".pkg")) | .browser_download_url')
         sha256=$(curl -sSL $url | shasum -a 256 | awk '{print $1}')
         curr_tag=$(grep -oP '(?<=version ")[^"]*' Casks/airlift.rb)
+        echo "$curr_tag"
 
         if ["$tag" != "$curr_tag"]; then
           rm Casks/airlift.rb
