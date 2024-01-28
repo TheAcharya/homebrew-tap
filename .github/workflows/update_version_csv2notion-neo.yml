@@ -27,7 +27,7 @@ jobs:
         sha256=$(curl -sSL $url | shasum -a 256 | awk '{print $1}')
         curr_tag=$(grep -oP '(?<=version ")[^"]*' Casks/csv2notion-neo.rb)
 
-        if [ "$curr_tag" == "$tag" ]; then
+        if [ "$curr_tag" != "$tag" ]; then
           echo "Updating formula file with version $tag and sha256 $sha256"
           rm Casks/csv2notion-neo.rb
 
