@@ -24,7 +24,6 @@ jobs:
 
             unzip neo.zip -d extracted_files
 
-            rm -rf "./Source/Marker Data/Marker Data/Resources/csv2notion_neo"
             cp -R ./extracted_files/dist/csv2notion_neo "./Source/Marker Data/Marker Data/Resources"
 
             git status

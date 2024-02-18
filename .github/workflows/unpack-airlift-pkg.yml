@@ -24,7 +24,6 @@ jobs:
 
             unzip airlift.zip -d extracted_files
 
-            rm -rf "./Source/Marker Data/Marker Data/Resources/airlift"
             cp -R ./extracted_files/dist/airlift "./Source/Marker Data/Marker Data/Resources"
 
             git status
