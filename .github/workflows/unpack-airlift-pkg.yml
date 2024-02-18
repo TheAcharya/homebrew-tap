@@ -24,4 +24,10 @@ jobs:
 
             unzip airlift.zip -d extracted_files
 
-            ls .
+            cp -R ./extracted_files/dist/airlift "./Source/Marker Data/Marker Data/Resources"
+
+            git config user.name "GitHub Actions"
+            git config user.email "actions@github.com"
+            git add Source
+            git commit -m "downloaded airlift binary version ${{ steps.get_release.outputs.tag }}"
+            git push
