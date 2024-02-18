@@ -24,4 +24,4 @@ jobs:
 
             unzip airlift.zip -d extracted_files
 
-            ls extracted_files
+            ls .
