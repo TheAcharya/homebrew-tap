@@ -1,0 +1,21 @@
+name: unpack-latest-airlift-pkg
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update_formula:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get latest release info
+        id: get_release
+        run: |
+          latest_release_tag=$(curl -sSL https://api.github.com/repos/TheAcharya/csv2notion-neo/releases/latest | jq -r '.tag_name | ltrimstr("v")')
+          latest_release_url=$(curl -sSL https://api.github.com/repos/TheAcharya/csv2notion-neo/releases/latest | jq -r '.assets[] | select(.name | endswith(".pkg")) | .browser_download_url')
+
+          echo "Latest release tag: $latest_release_tag"
+          echo "Latest release URL: $latest_release_url"
