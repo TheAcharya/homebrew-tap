@@ -24,10 +24,11 @@ jobs:
 
             unzip neo.zip -d extracted_files
 
+            rm -rf "./Source/Marker Data/Marker Data/Resources/csv2notion_neo"
             cp -R ./extracted_files/dist/csv2notion_neo "./Source/Marker Data/Marker Data/Resources"
 
             git config user.name "GitHub Actions"
             git config user.email "actions@github.com"
             git add Source
-            git commit -m "downloaded neo binary version ${{ steps.get_release.outputs.tag }}"
+            git commit -m "downloaded neo binary version $latest_release_tag"
             git push
