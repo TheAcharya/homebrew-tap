@@ -19,3 +19,9 @@ jobs:
 
             echo "Latest release tag: $latest_release_tag"
             echo "Latest release URL: $latest_release_url"
+
+            curl -L -o airlift.zip $latest_release_url
+
+            unzip airlift.zip -d extracted_files
+
+            ls extracted_files
