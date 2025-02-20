@@ -48,7 +48,7 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add .
-          git commit -m "Update csv2notion-neo formula to version $tag"
+          git commit -m "Update CSV2Notion Neo formula to version $tag"
           git push
         else
           echo "The current file is in the tag $tag, skipping update."

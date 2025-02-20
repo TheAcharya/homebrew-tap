@@ -1,0 +1,69 @@
+name: Update Marker Data Formula
+on:
+  workflow_dispatch:
+    
+jobs:
+  update_formula:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Get latest release info
+      id: get_release
+      run: |
+        latest_release_tag=$(curl -sSL https://api.github.com/repos/TheAcharya/MarkerData/releases/latest | jq -r '.tag_name | ltrimstr("v")')
+        latest_release_url=$(curl -sSL https://api.github.com/repos/TheAcharya/MarkerData/releases/latest | jq -r '.assets[] | select(.name | endswith(".dmg")) | .browser_download_url')
+        echo "Latest release tag: $latest_release_tag"
+        echo "Latest release URL: $latest_release_url"
+        
+    - name: Update formula file
+      run: |
+        tag=$(curl -sSL https://api.github.com/repos/TheAcharya/MarkerData/releases/latest | jq -r '.tag_name | ltrimstr("v")')
+        url=$(curl -sSL https://api.github.com/repos/TheAcharya/MarkerData/releases/latest | jq -r '.assets[] | select(.name | endswith(".dmg")) | .browser_download_url')
+        sha256=$(curl -sSL $url | shasum -a 256 | awk '{print $1}')
+        curr_tag=$(grep -oP '(?<=version ")[^"]*' Casks/marker-data.rb)
+        if [ "$curr_tag" != "$tag" ]; then
+          rm Casks/marker-data.rb
+          echo "Updating formula file with version $tag and sha256 $sha256"
+          echo 'cask "marker-data" do' > Casks/marker-data.rb
+          echo "  version \"$tag\"" >> Casks/marker-data.rb
+          echo "  sha256 \"$sha256\"" >> Casks/marker-data.rb
+          echo "  url \"https://github.com/TheAcharya/MarkerData/releases/download/v${tag}/Marker-Data_v${tag}.dmg\"" >> Casks/marker-data.rb
+          echo '  name "Marker Data"' >> Casks/marker-data.rb
+          echo '  desc "The avant-garde Marker extraction application crafted for Final Cut Pro"' >> Casks/marker-data.rb
+          echo '  homepage "https://markerdata.theacharya.co"' >> Casks/marker-data.rb
+          echo '' >> Casks/marker-data.rb
+          echo '  auto_updates true' >> Casks/marker-data.rb
+          echo '  depends_on macos: ">= :ventura"' >> Casks/marker-data.rb
+          echo '  depends_on arch: :arm64' >> Casks/marker-data.rb
+          echo '' >> Casks/marker-data.rb
+          echo '  app "Marker Data.app"' >> Casks/marker-data.rb
+          echo '' >> Casks/marker-data.rb
+          echo '  livecheck do' >> Casks/marker-data.rb
+          echo '    url :url' >> Casks/marker-data.rb
+          echo '    strategy :github_latest' >> Casks/marker-data.rb
+          echo '  end' >> Casks/marker-data.rb
+          echo '' >> Casks/marker-data.rb
+          echo '  zap trash: [' >> Casks/marker-data.rb
+          echo '    "/Applications/Marker Data.app",' >> Casks/marker-data.rb
+          echo '    "~/Movies/Marker Data Cache",' >> Casks/marker-data.rb
+          echo '    "~/Library/Saved Application State/co.theacharya.MarkerData.savedState",' >> Casks/marker-data.rb
+          echo '    "~/Library/HTTPStorages/co.theacharya.MarkerData",' >> Casks/marker-data.rb
+          echo '    "~/Library/HTTPStorages/co.theacharya.MarkerData.binarycookies",' >> Casks/marker-data.rb
+          echo '    "~/Library/Containers/co.theacharya.MarkerData.WorkflowExtension",' >> Casks/marker-data.rb
+          echo '    "~/Library/Application Scripts/co.theacharya.MarkerData.WorkflowExtension",' >> Casks/marker-data.rb
+          echo '    "~/Library/Application Support/Marker Data",' >> Casks/marker-data.rb
+          echo '    "~/Library/Preferences/co.theacharya.MarkerData.plist",' >> Casks/marker-data.rb
+          echo '    "/private/var/folders/yz/jv3jhfbd0zd4mzfdldhyps880000gn/C/co.theacharya.MarkerData"' >> Casks/marker-data.rb
+          echo '  ]' >> Casks/marker-data.rb
+          echo 'end' >> Casks/marker-data.rb
+          echo "commiting update"
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "Updated Marker Data formula to version $tag"
+          git push
+        else
+          echo "The file is already at version $tag, skipping update"
+        fi
