@@ -49,6 +49,7 @@ jobs:
           echo '    "/Applications/Marker Data.app",' >> Casks/marker-data.rb
           echo '    "~/Movies/Marker Data Cache",' >> Casks/marker-data.rb
           echo '    "~/Library/Saved Application State/co.theacharya.MarkerData.savedState",' >> Casks/marker-data.rb
+          echo '    "~/Library/WebKit/co.theacharya.MarkerData",' >> Casks/marker-data.rb
           echo '    "~/Library/HTTPStorages/co.theacharya.MarkerData",' >> Casks/marker-data.rb
           echo '    "~/Library/HTTPStorages/co.theacharya.MarkerData.binarycookies",' >> Casks/marker-data.rb
           echo '    "~/Library/Containers/co.theacharya.MarkerData.WorkflowExtension",' >> Casks/marker-data.rb
