@@ -21,6 +21,7 @@ cask "marker-data" do
     "/Applications/Marker Data.app",
     "~/Movies/Marker Data Cache",
     "~/Library/Saved Application State/co.theacharya.MarkerData.savedState",
+    "~/Library/WebKit/co.theacharya.MarkerData",
     "~/Library/HTTPStorages/co.theacharya.MarkerData",
     "~/Library/HTTPStorages/co.theacharya.MarkerData.binarycookies",
     "~/Library/Containers/co.theacharya.MarkerData.WorkflowExtension",
