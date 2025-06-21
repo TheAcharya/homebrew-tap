@@ -1,7 +1,7 @@
 cask "marker-data" do
-  version "1.2.1"
-  sha256 "f4511566af721f989cf252080a80c9b3cd8d1ed1bdad249a4bada68e57a11151"
-  url "https://github.com/TheAcharya/MarkerData/releases/download/v1.2.1/Marker-Data_v1.2.1.dmg"
+  version "1.2.2"
+  sha256 "6667851b33b0d3946732a9cb5bccc2289d184b00eb336a2f47fef1de9d902134"
+  url "https://github.com/TheAcharya/MarkerData/releases/download/v1.2.2/Marker-Data_v1.2.2.dmg"
   name "Marker Data"
   desc "The avant-garde Marker extraction application crafted for Final Cut Pro"
   homepage "https://markerdata.theacharya.co"
