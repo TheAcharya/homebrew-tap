@@ -1,4 +1,3 @@
-
 <p align="center">
   <a href="https://github.com/TheAcharya/homebrew-tap"><img src="https://brew.sh/assets/img/homebrew.svg" height="200">
   <h1 align="center">Homebrew Tap</h1>
