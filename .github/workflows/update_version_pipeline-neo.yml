@@ -1,0 +1,56 @@
+name: Update Pipeline-neo Formula
+
+on:
+  workflow_dispatch:
+    
+jobs:
+  update_formula:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Get latest release info
+      id: get_release
+      run: |
+        latest_release_tag=$(curl -sSL https://api.github.com/repos/TheAcharya/pipeline-neo/releases/latest | jq -r '.tag_name | ltrimstr("v")')
+        latest_release_url=$(curl -sSL https://api.github.com/repos/TheAcharya/pipeline-neo/releases/latest | jq -r '.assets[] | select(.name | endswith(".pkg")) | .browser_download_url')
+
+        echo "tag=$latest_release_tag" >> $GITHUB_OUTPUT
+        echo "Latest release tag: $latest_release_tag"
+        echo "Latest release URL: $latest_release_url"
+
+    - name: Update formula file
+      run: |
+        tag=$(curl -sSL https://api.github.com/repos/TheAcharya/pipeline-neo/releases/latest | jq -r '.tag_name | ltrimstr("v")')
+        url=$(curl -sSL https://api.github.com/repos/TheAcharya/pipeline-neo/releases/latest | jq -r '.assets[] | select(.name | endswith(".pkg")) | .browser_download_url')
+        sha256=$(curl -sSL $url | shasum -a 256 | awk '{print $1}')
+        curr_tag=$(grep -oP '(?<=version ")[^"]*' Casks/pipeline-neo.rb)
+
+        if [  "$curr_tag" != "$tag" ]; then
+          rm Casks/pipeline-neo.rb
+          echo "Updating formula file with version $tag and sha256 $sha256"
+          echo 'cask "pipeline-neo" do' > Casks/pipeline-neo.rb
+          echo "  version \"$tag\"" >> Casks/pipeline-neo.rb
+          echo "  sha256 \"$sha256\"" >> Casks/pipeline-neo.rb
+          echo "  url \"https://github.com/TheAcharya/pipeline-neo/releases/download/$tag/pipeline-neo-cli-$tag.pkg\"" >> Casks/pipeline-neo.rb
+          echo '  name "Pipeline Neo"' >> Casks/pipeline-neo.rb
+          echo '  desc "Swift framework for Final Cut Pro FCPXML processing (CLI)"' >> Casks/pipeline-neo.rb
+          echo '  homepage "https://github.com/TheAcharya/pipeline-neo"' >> Casks/pipeline-neo.rb
+          echo '' >> Casks/pipeline-neo.rb
+          echo "  pkg \"pipeline-neo-cli-$tag.pkg\"" >> Casks/pipeline-neo.rb
+          echo '' >> Casks/pipeline-neo.rb
+          echo '  uninstall pkgutil: "co.theacharya.PipelineNeo"' >> Casks/pipeline-neo.rb
+          echo 'end' >> Casks/pipeline-neo.rb
+
+          echo "commiting update"
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "Updated pipeline-neo formula to version ${{ steps.get_release.outputs.tag }}"
+          git push
+        else
+          echo "The file is in the tag $tag, skipping update"
+        fi
+        
