@@ -1,4 +1,4 @@
-name: Update Pipeline-neo Formula
+name: Update Pipeline Neo Formula
 
 on:
   workflow_dispatch:
