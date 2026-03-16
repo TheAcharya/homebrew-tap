@@ -1,12 +1,12 @@
 cask "pipeline-neo" do
-  version "2.4.3"
-  sha256 "4c0409b7e40b405ad29d7984e999b11045a3b47f3a5849d8487c03f641d203fd"
-  url "https://github.com/TheAcharya/pipeline-neo/releases/download/2.4.3/pipeline-neo-cli-2.4.3.pkg"
+  version "2.5.0"
+  sha256 "9b0e89e421e3697ff6cfbc607f6b4c359dfbf837264811f392c6579fd7a6ca2e"
+  url "https://github.com/TheAcharya/pipeline-neo/releases/download/2.5.0/pipeline-neo-cli-2.5.0.pkg"
   name "Pipeline Neo"
   desc "Swift framework for Final Cut Pro FCPXML processing (CLI)"
   homepage "https://github.com/TheAcharya/pipeline-neo"
 
-  pkg "pipeline-neo-cli-2.4.3.pkg"
+  pkg "pipeline-neo-cli-2.5.0.pkg"
 
   uninstall pkgutil: "co.theacharya.PipelineNeo"
 end
