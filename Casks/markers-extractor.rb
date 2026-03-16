@@ -1,12 +1,12 @@
 cask "markers-extractor" do
-  version "0.4.0"
-  sha256 "763b324c5aebc1fbb24733eebf34f3287d3f2aa60c3ce8f3afc48d80d27adb0f"
-  url "https://github.com/TheAcharya/MarkersExtractor/releases/download/0.4.0/markers-extractor-cli-0.4.0.pkg"
+  version "0.4.1"
+  sha256 "49584c6eb5a6f8dadfcacc76bc31ad354d0c176b3f10f5b616e5f36a2d2c4629"
+  url "https://github.com/TheAcharya/MarkersExtractor/releases/download/0.4.1/markers-extractor-cli-0.4.1.pkg"
   name "MarkersExtractor"
   desc "Extract Markers from Final Cut Pro FCPXML"
   homepage "https://github.com/TheAcharya/MarkersExtractor"
 
-  pkg "markers-extractor-cli-0.4.0.pkg"
+  pkg "markers-extractor-cli-0.4.1.pkg"
 
   uninstall pkgutil: "co.theacharya.MarkersExtractor"
 end
