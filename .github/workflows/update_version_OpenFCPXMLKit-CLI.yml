@@ -1,0 +1,56 @@
+name: Update OpenFCPXMLKit Formula
+
+on:
+  workflow_dispatch:
+    
+jobs:
+  update_formula:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v6
+
+    - name: Get latest release info
+      id: get_release
+      run: |
+        latest_release_tag=$(curl -sSL https://api.github.com/repos/TheAcharya/OpenFCPXMLKit/releases/latest | jq -r '.tag_name | ltrimstr("v")')
+        latest_release_url=$(curl -sSL https://api.github.com/repos/TheAcharya/OpenFCPXMLKit/releases/latest | jq -r '.assets[] | select(.name | endswith(".pkg")) | .browser_download_url')
+
+        echo "tag=$latest_release_tag" >> $GITHUB_OUTPUT
+        echo "Latest release tag: $latest_release_tag"
+        echo "Latest release URL: $latest_release_url"
+
+    - name: Update formula file
+      run: |
+        tag=$(curl -sSL https://api.github.com/repos/TheAcharya/OpenFCPXMLKit/releases/latest | jq -r '.tag_name | ltrimstr("v")')
+        url=$(curl -sSL https://api.github.com/repos/TheAcharya/OpenFCPXMLKit/releases/latest | jq -r '.assets[] | select(.name | endswith(".pkg")) | .browser_download_url')
+        sha256=$(curl -sSL $url | shasum -a 256 | awk '{print $1}')
+        curr_tag=$(grep -oP '(?<=version ")[^"]*' Casks/OpenFCPXMLKit-CLI.rb)
+
+        if [  "$curr_tag" != "$tag" ]; then
+          rm Casks/OpenFCPXMLKit-CLI.rb
+          echo "Updating formula file with version $tag and sha256 $sha256"
+          echo 'cask "OpenFCPXMLKit-CLI" do' > Casks/OpenFCPXMLKit-CLI.rb
+          echo "  version \"$tag\"" >> Casks/OpenFCPXMLKit-CLI.rb
+          echo "  sha256 \"$sha256\"" >> Casks/OpenFCPXMLKit-CLI.rb
+          echo "  url \"https://github.com/TheAcharya/OpenFCPXMLKit/releases/download/$tag/OpenFCPXMLKit-CLI-$tag.pkg\"" >> Casks/OpenFCPXMLKit-CLI.rb
+          echo '  name "OpenFCPXMLKit"' >> Casks/OpenFCPXMLKit-CLI.rb
+          echo '  desc "Swift framework for Final Cut Pro FCPXML processing (CLI)"' >> Casks/OpenFCPXMLKit-CLI.rb
+          echo '  homepage "https://github.com/TheAcharya/OpenFCPXMLKit"' >> Casks/OpenFCPXMLKit-CLI.rb
+          echo '' >> Casks/OpenFCPXMLKit-CLI.rb
+          echo "  pkg \"OpenFCPXMLKit-CLI-$tag.pkg\"" >> Casks/OpenFCPXMLKit-CLI.rb
+          echo '' >> Casks/OpenFCPXMLKit-CLI.rb
+          echo '  uninstall pkgutil: "co.theacharya.OpenFCPXMLKit"' >> Casks/OpenFCPXMLKit-CLI.rb
+          echo 'end' >> Casks/OpenFCPXMLKit-CLI.rb
+
+          echo "commiting update"
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "Updated OpenFCPXMLKit-CLI formula to version ${{ steps.get_release.outputs.tag }}"
+          git push
+        else
+          echo "The file is in the tag $tag, skipping update"
+        fi
+        
