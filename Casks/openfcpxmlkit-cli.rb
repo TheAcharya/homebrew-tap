@@ -1,12 +1,12 @@
 cask "openfcpxmlkit-cli" do
-  version "3.1.0"
-  sha256 "cf26148fa7e925ad0892768e4c4c938878ad9c9e75403421ec79670fa40435e6"
-  url "https://github.com/TheAcharya/OpenFCPXMLKit/releases/download/3.1.0/OpenFCPXMLKit-CLI-3.1.0.pkg"
+  version "3.1.1"
+  sha256 "3fc69206d316b1722675a57f7ad91cf52dd45ed0caf762831ad0135aa4148f9f"
+  url "https://github.com/TheAcharya/OpenFCPXMLKit/releases/download/3.1.1/OpenFCPXMLKit-CLI-3.1.1.pkg"
   name "OpenFCPXMLKit"
   desc "Swift framework for Final Cut Pro FCPXML processing (CLI)"
   homepage "https://github.com/TheAcharya/OpenFCPXMLKit"
 
-  pkg "OpenFCPXMLKit-CLI-3.1.0.pkg"
+  pkg "OpenFCPXMLKit-CLI-3.1.1.pkg"
 
   uninstall pkgutil: "co.theacharya.OpenFCPXMLKit"
 end
