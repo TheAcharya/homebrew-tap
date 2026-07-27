@@ -1,12 +1,12 @@
 cask "csv2notion-neo" do
-  version "2.2.0"
-  sha256 "91ca9083b7713db6a288ce487d2a2c3d2ba6ed79c94d9f3aaab4d0df1eaafdb7"
-  url "https://github.com/TheAcharya/csv2notion-neo/releases/download/v2.2.0/CSV2Notion-Neo_2.2.0.pkg"
+  version "2.2.1"
+  sha256 "7835d5fa2694970e3d8300361ab28445f69ea5ff57bbb566cbd45a4ff8eaae95"
+  url "https://github.com/TheAcharya/csv2notion-neo/releases/download/v2.2.1/CSV2Notion-Neo_2.2.1.pkg"
   name "CSV2Notion Neo"
   desc "Upload & Merge CSV or JSON Data with Images to Notion Database"
   homepage "https://github.com/TheAcharya/csv2notion-neo"
 
-  pkg "CSV2Notion-Neo_2.2.0.pkg"
+  pkg "CSV2Notion-Neo_2.2.1.pkg"
 
   uninstall pkgutil: "co.theacharya.CSV2Notion-Neo"
 end
